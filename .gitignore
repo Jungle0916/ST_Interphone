@@ -1,0 +1,27 @@
+# Keil MDK 编译相关文件忽略规则
+*.axf
+*.hex
+*.bin
+*.o
+*.d
+*.crf
+*.lst
+*.htm
+*.sct
+*.dep
+MDK-ARM/*/Objects/
+MDK-ARM/*/Listings/
+MDK-ARM/ST_Interphone/RTE/_*/*.cmse-lib.o
+MDK-ARM/ST_Interphone/RTE/_*/RTE_Components.h
+
+# Keil 用户配置文件（避免多人协作时冲突）
+MDK-ARM/*.uvguix.*
+MDK-ARM/*.uvoptx
+
+# VS Code 配置（如需共享配置可调整此规则）
+.vscode/
+
+# 系统文件
+Thumbs.db
+.DS_Store
+desktop.ini
