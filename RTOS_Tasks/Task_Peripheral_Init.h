@@ -1,5 +1,5 @@
 /********************************************************
-Copyright (c) 2025 Year, Dongguan City University., Ltd. All rights reserved.
+Copyright (c) 2025 Dongguan City University. All rights reserved.
 FileName  : Task_Peripheral_Init.h 
 Author    : zheng_kai_wen 
 Version   : v0.0.0.0 

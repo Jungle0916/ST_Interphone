@@ -23,6 +23,8 @@
 
 /* USER CODE BEGIN 0 */
 
+#include "App_SDRAM.h"
+
 /* USER CODE END 0 */
 
 SDRAM_HandleTypeDef hsdram2;
@@ -69,7 +71,8 @@ void MX_FMC_Init(void)
   }
 
   /* USER CODE BEGIN FMC_Init 2 */
-
+  FMC_SDRAM_CommandTypeDef command;
+  SDRAM_Initialization_Sequence(&hsdram2, &command);
   /* USER CODE END FMC_Init 2 */
 }
 

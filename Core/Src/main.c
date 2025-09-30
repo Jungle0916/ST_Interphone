@@ -20,7 +20,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "dma.h"
+#include "dma2d.h"
 #include "fatfs.h"
+#include "ltdc.h"
 #include "sdio.h"
 #include "usart.h"
 #include "gpio.h"
@@ -31,10 +33,7 @@
 
 #include "Com_Debug.h"
 #include "App_SDRAM.h"
-
-extern SDRAM_HandleTypeDef hsdram2;
-// command
-FMC_SDRAM_CommandTypeDef command;
+#include "Int_LCD.h"
 
 /* USER CODE END Includes */
 
@@ -105,10 +104,15 @@ int main(void)
   MX_FMC_Init();
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
+  MX_LTDC_Init();
+  MX_DMA2D_Init();
   /* USER CODE BEGIN 2 */
 
-    SDRAM_Initialization_Sequence(&hsdram2, &command);
-	SDRAM_Test();
+
+//	SDRAM_Test();
+
+	LCD_Test_Color();			// —’…´≤‚ ‘
+
 
   /* USER CODE END 2 */
 
