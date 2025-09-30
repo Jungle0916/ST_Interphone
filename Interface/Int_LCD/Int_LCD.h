@@ -4,32 +4,29 @@ FileName  : Int_LCD.h
 Author    : zheng_kai_wen 
 Version   : v0.0.0.0 
 Date      : 2025.09.29 
-Note      : 本代码参考反科科技,但删除了原本的图像,字体显示功能
+Note      : 本代码参考反客科技,但删除了原本的图像,字体显示功能
 History   : none 
 *********************************************************/
 #ifndef __INT_LCD_H
 #define	__INT_LCD_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------*/
 #include "main.h"
 
+/* Private define ------------------------------------------------*/
 #define LCD_Width     	800				//	LCD的像素长度
 #define LCD_Height    	480				//	LCD的像素宽度
 #define LCD_MemoryAdd   0xD0000000 		//	显存的起始地址  
 
-// 显示方向参数
-// 使用示例：LCD_DisplayDirection(Direction_H) ，设置屏幕横屏显示
-// 使用示例：LCD_DisplayDirection(Direction_V) ，设置屏幕竖直显示
-
 #define	Direction_H	0		//LCD横屏显示
 #define	Direction_V	1		//LCD竖屏显示
 
-// 设置变量显示时多余位补0还是补空格
-// 只有 LCD_DisplayNumber() 显示整数 和 LCD_DisplayDecimals()显示小数 这两个函数用到
-// 使用示例： LCD_ShowNumMode(Fill_Zero) 设置多余位填充0，例如 123 可以显示为 000123
-//
 #define  Fill_Zero  0		//填充0
 #define  Fill_Space 1		//填充空格
-
 
 /*---------------------------------------- 常用颜色 ------------------------------------------------------
 
@@ -70,9 +67,8 @@ History   : none
 #define 	DARK_YELLOW     0xff808000    //	暗黄色
 #define 	DARK_GREY       0xff404040    //	暗灰色
 
-
-/*---------------------------------------------------------- 函数声明 -------------------------------------------------------*/
-	
+/* Private typedef -----------------------------------------------*/
+/* Public variables ----------------------------------------------*/
 void  LTDC_Init(void);  //LCD初始化
 void  LCD_Clear(void); //清屏
 void  LCD_ClearRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height);	// 局部清屏函数
@@ -106,5 +102,9 @@ void  LCD_FillCircle(uint16_t x, uint16_t y, uint16_t r);									//填充圆
 
 void LCD_Test_Color(void);				// 颜色测试
 void LCD_Init_Application(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

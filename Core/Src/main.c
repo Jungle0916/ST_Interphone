@@ -22,6 +22,7 @@
 #include "dma.h"
 #include "dma2d.h"
 #include "fatfs.h"
+#include "i2c.h"
 #include "ltdc.h"
 #include "sdio.h"
 #include "usart.h"
@@ -34,6 +35,7 @@
 #include "Com_Debug.h"
 #include "App_SDRAM.h"
 #include "Int_LCD.h"
+#include "Int_Touch.h"
 
 /* USER CODE END Includes */
 
@@ -106,12 +108,41 @@ int main(void)
   MX_FATFS_Init();
   MX_LTDC_Init();
   MX_DMA2D_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
 
 //	SDRAM_Test();
 
 	LCD_Test_Color();			// 颜色测试
+
+	// 触摸屏测试
+	if(Touch_Init() == SUCCESS)
+	{
+		printf("触摸屏初始化成功\r\n");
+		
+		// 触摸屏测试循环
+		while(1)
+		{
+			Touch_Scan();  // 扫描触摸状态
+			
+			if(touchInfo.flag)  // 检测到触摸
+			{
+				// 打印触摸点信息
+				printf("检测到触摸，触摸点数: %d\r\n", touchInfo.num);
+				for(uint8_t i = 0; i < touchInfo.num; i++)
+				{
+					printf("触摸点 %d: X=%d, Y=%d\r\n", i+1, touchInfo.x[i], touchInfo.y[i]);
+				}
+			}
+			
+			HAL_Delay(50);  // 延时50ms，避免打印过于频繁
+		}
+	}
+	else
+	{
+		printf("触摸屏初始化失败\r\n");
+	}
 
 
   /* USER CODE END 2 */
