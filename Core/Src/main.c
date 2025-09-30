@@ -25,18 +25,18 @@
 #include "i2c.h"
 #include "ltdc.h"
 #include "sdio.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 #include "Com_Debug.h"
 #include "App_SDRAM.h"
 #include "Int_LCD.h"
 #include "Int_Touch.h"
-
+#include "Int_W25Q64.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -109,10 +109,55 @@ int main(void)
   MX_LTDC_Init();
   MX_DMA2D_Init();
   MX_I2C2_Init();
+  MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
 
-
 //	SDRAM_Test();
+
+    // 初始化W25Q64
+    HAL_Delay(2000);
+    W25Q64_Init();
+    
+    // 测试写入和读取
+    uint8_t write_buffer[256];
+    uint8_t read_buffer[256];
+    
+    // 填充写入缓冲区
+    for(int i = 0; i < 256; i++) {
+        write_buffer[i] = i;
+    }
+    
+    // 写入数据到地址0
+    W25Q64_Write(write_buffer, 0, 256);
+    printf("写入数据完成\r\n");
+    
+    // 从地址0读取数据
+    W25Q64_Read(read_buffer, 0, 256);
+    
+    // 打印读取的数据
+    printf("读取的数据:\r\n");
+    for(int i = 0; i < 256; i++) {
+        printf("0x%02X ", read_buffer[i]);
+        if((i + 1) % 16 == 0) {
+            printf("\r\n");
+        }
+    }
+    printf("\r\n");
+    
+    // 验证数据
+    int verify_success = 1;
+    for(int i = 0; i < 256; i++) {
+        if(write_buffer[i] != read_buffer[i]) {
+            verify_success = 0;
+            break;
+        }
+    }
+    
+    if(verify_success) {
+        printf("数据验证成功\r\n");
+    } else {
+        printf("数据验证失败\r\n");
+    }
 
 	LCD_Test_Color();			// 颜色测试
 

@@ -63,6 +63,8 @@ void Error_Handler(void);
 #define Touch_INT_GPIO_Port GPIOI
 #define LTDC_Black_Pin GPIO_PIN_13
 #define LTDC_Black_GPIO_Port GPIOD
+#define SPI_Flash_CS_Pin GPIO_PIN_3
+#define SPI_Flash_CS_GPIO_Port GPIOG
 #define LED2_Pin GPIO_PIN_3
 #define LED2_GPIO_Port GPIOI
 #define LED1_Pin GPIO_PIN_4
