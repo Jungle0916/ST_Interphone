@@ -26,6 +26,7 @@
 #include "ltdc.h"
 #include "sdio.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
@@ -37,6 +38,11 @@
 #include "Int_LCD.h"
 #include "Int_Touch.h"
 #include "Int_W25Q64.h"
+#include "lv_demo_stress.h"
+
+#include "lvgl.h"                // 它为整个LVGL提供了更完整的头文件引用
+#include "lv_port_disp.h"        // LVGL的显示支持
+#include "lv_port_indev.h"       // LVGL的触屏支持
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,9 +116,20 @@ int main(void)
   MX_DMA2D_Init();
   MX_I2C2_Init();
   MX_SPI3_Init();
+  MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
 
 //	SDRAM_Test();
+    // 启动TIM7定时器
+    HAL_TIM_Base_Start_IT(&htim7);
+
+    // 初始化SDRAM内存管理器
+    sdram_init();
+
+	Touch_Init();
+	lv_init();                             // LVGL 初始化
+	lv_port_disp_init();                   // 注册LVGL的显示任务
+	lv_port_indev_init();                  // 注册LVGL的触屏检测任务
 
     // 初始化W25Q64
     HAL_Delay(2000);
@@ -159,35 +176,35 @@ int main(void)
         printf("数据验证失败\r\n");
     }
 
-	LCD_Test_Color();			// 颜色测试
+//	LCD_Test_Color();			// 颜色测试
 
 	// 触摸屏测试
-	if(Touch_Init() == SUCCESS)
-	{
-		printf("触摸屏初始化成功\r\n");
-		
-		// 触摸屏测试循环
-		while(1)
-		{
-			Touch_Scan();  // 扫描触摸状态
-			
-			if(touchInfo.flag)  // 检测到触摸
-			{
-				// 打印触摸点信息
-				printf("检测到触摸，触摸点数: %d\r\n", touchInfo.num);
-				for(uint8_t i = 0; i < touchInfo.num; i++)
-				{
-					printf("触摸点 %d: X=%d, Y=%d\r\n", i+1, touchInfo.x[i], touchInfo.y[i]);
-				}
-			}
-			
-			HAL_Delay(50);  // 延时50ms，避免打印过于频繁
-		}
-	}
-	else
-	{
-		printf("触摸屏初始化失败\r\n");
-	}
+//	if(Touch_Init() == SUCCESS)
+//	{
+//		printf("触摸屏初始化成功\r\n");
+//		
+//		// 触摸屏测试循环
+//		while(1)
+//		{
+//			Touch_Scan();  // 扫描触摸状态
+//			
+//			if(touchInfo.flag)  // 检测到触摸
+//			{
+//				// 打印触摸点信息
+//				printf("检测到触摸，触摸点数: %d\r\n", touchInfo.num);
+//				for(uint8_t i = 0; i < touchInfo.num; i++)
+//				{
+//					printf("触摸点 %d: X=%d, Y=%d\r\n", i+1, touchInfo.x[i], touchInfo.y[i]);
+//				}
+//			}
+//			
+//			HAL_Delay(50);  // 延时50ms，避免打印过于频繁
+//		}
+//	}
+//	else
+//	{
+//		printf("触摸屏初始化失败\r\n");
+//	}
 
 
   /* USER CODE END 2 */
@@ -287,7 +304,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+    if (htim->Instance == TIM7) 
+    {
+		lv_tick_inc(1);
+    }
   /* USER CODE END Callback 1 */
 }
 

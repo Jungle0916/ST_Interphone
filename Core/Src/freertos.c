@@ -25,9 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
-#include "Com_Debug.h"
-
+TickType_t tick_count = 0;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,6 +68,13 @@ const osThreadAttr_t Peripheral_Init_attributes = {
   .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for Task_LVGL */
+osThreadId_t Task_LVGLHandle;
+const osThreadAttr_t Task_LVGL_attributes = {
+  .name = "Task_LVGL",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -79,6 +84,7 @@ const osThreadAttr_t Peripheral_Init_attributes = {
 void StartDefaultTask(void *argument);
 void Task_Heartbeat_Led(void *argument);
 void Task_Peripheral_Init(void *argument);
+void Task_LVGL_Tick(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -118,6 +124,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of Peripheral_Init */
   Peripheral_InitHandle = osThreadNew(Task_Peripheral_Init, NULL, &Peripheral_Init_attributes);
 
+  /* creation of Task_LVGL */
+  Task_LVGLHandle = osThreadNew(Task_LVGL_Tick, NULL, &Task_LVGL_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -141,8 +150,9 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  debug_printf("123");
-	  osDelay(1000);
+	  // 获取并打印系统tick计数
+	  tick_count = xTaskGetTickCount();
+	  osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -181,6 +191,24 @@ __weak void Task_Peripheral_Init(void *argument)
     osDelay(1);
   }
   /* USER CODE END Task_Peripheral_Init */
+}
+
+/* USER CODE BEGIN Header_Task_LVGL_Tick */
+/**
+* @brief Function implementing the Task_LVGL thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Task_LVGL_Tick */
+__weak void Task_LVGL_Tick(void *argument)
+{
+  /* USER CODE BEGIN Task_LVGL_Tick */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END Task_LVGL_Tick */
 }
 
 /* Private application code --------------------------------------------------*/

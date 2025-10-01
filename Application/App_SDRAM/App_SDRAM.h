@@ -38,8 +38,14 @@ extern "C" {
 
 /* Public variables ----------------------------------------------*/
 
-/* Public function prototypes ------------------------------------*/
-uint8_t 	SDRAM_Test(void);     		// SDRAM²âÊÔº¯Êý
+/* Public function prototypes ------------------------------------*/;
+void sdram_init(void);
+void* sdram_malloc(size_t size);
+void sdram_free(void* ptr);
+void* sdram_realloc(void* ptr, size_t size);
+uint32_t sdram_get_free(void);
+uint32_t sdram_get_used(void);
+uint8_t SDRAM_Test(void);     		// SDRAM²âÊÔº¯Êý
 void SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_CommandTypeDef *Command);
 
 #ifdef __cplusplus
