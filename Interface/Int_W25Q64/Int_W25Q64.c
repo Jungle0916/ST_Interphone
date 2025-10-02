@@ -5,11 +5,12 @@ Author    : zheng_kai_wen
 Version   : v0.0.0.0 
 Date      : 2025.09.26 
 Note      : none
-History   : none 
+History   : 增加对W25Q64JVID的读取并在初始化时判断是否为该型号 ID:0xEF4017 - 2025.10.02
 *********************************************************/
 /* Includes ------------------------------------------------------*/
 #include "Int_W25Q64.h"
 #include <stdlib.h>
+#include "Com_Debug.h"
 /* Private define ------------------------------------------------*/
 /* Private typedef -----------------------------------------------*/
 /* Public variables ----------------------------------------------*/
@@ -84,10 +85,11 @@ uint32_t W25Q64_ReadID(void)
 
     W25Q64_CS_LOW();
     
-    W25Q64_Send_Byte(W25X_ManufactDeviceID);
-    Temp0 = W25Q64_Send_Byte(DUMMY_BYTE);
-    Temp1 = W25Q64_Send_Byte(DUMMY_BYTE);
-    Temp2 = W25Q64_Send_Byte(DUMMY_BYTE);
+    // 使用JEDEC ID命令(0x9F)来读取ID
+    W25Q64_Send_Byte(0x9F);  // 0x9F
+    Temp0 = W25Q64_Send_Byte(DUMMY_BYTE);  // Manufacturer ID (应为0xEF)
+    Temp1 = W25Q64_Send_Byte(DUMMY_BYTE);  // Memory Type (应为0x40表示W25Qxx)
+    Temp2 = W25Q64_Send_Byte(DUMMY_BYTE);  // Capacity (应为0x17表示64Mbit)
     
     W25Q64_CS_HIGH();
     
@@ -368,8 +370,14 @@ void W25Q64_Init(void)
     
     // 检查芯片ID
     uint32_t flash_id = W25Q64_ReadID();
+    debug_println("W25Q64 ID: 0x%06X", flash_id);
     if(flash_id == 0xEF4017)  // W25Q64的典型ID
     {
+        debug_println("W25Q64初始化成功");
         // 初始化成功
+    }
+    else
+    {
+        debug_println("W25Q64初始化失败，期望ID: 0xEF4017");
     }
 }

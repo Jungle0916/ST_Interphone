@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Common/Com_Debug;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Application/App_SDRAM;../Interface/Int_LED;../RTOS_Tasks;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src;../Interface/Int_LCD;../Interface/Int_Touch;../Interface/Int_W25Q64;../LVGL;../LVGL/src;../LVGL/examples/porting;../LVGL/demos/stress;..\LVGL\demos\music</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Common/Com_Debug;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Application/App_SDRAM;../Interface/Int_LED;../RTOS_Tasks;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src;../Interface/Int_LCD;../Interface/Int_Touch;../Interface/Int_W25Q64;../LVGL;../LVGL/src;../LVGL/examples/porting;../LVGL/demos/stress;../LVGL/demos/music;../Common/Com_Flash</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -371,7 +371,7 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\ST_Interphone\ST_Interphone.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>

@@ -5,7 +5,7 @@ Author    : zheng_kai_wen
 Version   : v0.0.0.0 
 Date      : 2025.09.26 
 Note      : none
-History   : none 
+History   : 加入SDRAM内存池, 分配1MB用于LVGL内存分配 - 2025.10.01
 *********************************************************/
 #ifndef __APP_SDRAM_H
 #define	__APP_SDRAM_H

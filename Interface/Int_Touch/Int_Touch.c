@@ -9,7 +9,7 @@ History   : none
 *********************************************************/
 /* Includes ------------------------------------------------------*/
 #include "Int_Touch.h"
-
+#include "Com_Debug.h"
 /* Private define ------------------------------------------------*/
 /* Private typedef -----------------------------------------------*/
 /* Public variables ----------------------------------------------*/
@@ -78,29 +78,24 @@ uint8_t Touch_Init(void)
     status = HAL_I2C_Mem_Read(&hi2c2, GT9XX_IIC_RADDR, GT9XX_ID_ADDR, I2C_MEMADD_SIZE_16BIT, GT9XX_Info, 11, 100);
     if(status == HAL_OK)
     {
-        printf("读取到的芯片ID数据: ");
-        for(int i = 0; i < 11; i++)
-        {
-            printf("0x%02X ", GT9XX_Info[i]);
-        }
-        printf("\r\n");
-        
+        debug_printf("读取到的芯片ID数据: \r\n");
+      
         // 打印芯片信息
-        printf("Touch ID: %.4s \r\n", GT9XX_Info);  // GT1158
-        printf("固件版本: 0X%.4x\r\n", (GT9XX_Info[5]<<8) + GT9XX_Info[4]);
-        printf("触摸分辨率: %d * %d\r\n", (GT9XX_Info[7]<<8) + GT9XX_Info[6], (GT9XX_Info[9]<<8) + GT9XX_Info[8]);
+        debug_printf("Touch ID: %.4s \r\n", GT9XX_Info);  // GT1158
+        debug_printf("固件版本: 0X%.4x\r\n", (GT9XX_Info[5]<<8) + GT9XX_Info[4]);
+        debug_printf("触摸分辨率: %d * %d\r\n", (GT9XX_Info[7]<<8) + GT9XX_Info[6], (GT9XX_Info[9]<<8) + GT9XX_Info[8]);
         return SUCCESS;
     }
     else
     {
-        printf("读取芯片ID信息失败，错误代码: %d\r\n", status);
-        if(status == HAL_ERROR) printf("HAL_ERROR\r\n");
-        if(status == HAL_BUSY) printf("HAL_BUSY\r\n");
-        if(status == HAL_TIMEOUT) printf("HAL_TIMEOUT\r\n");
+        debug_printf("读取芯片ID信息失败，错误代码: %d\r\n", status);
+        if(status == HAL_ERROR) debug_printf("HAL_ERROR\r\n");
+        if(status == HAL_BUSY) debug_printf("HAL_BUSY\r\n");
+        if(status == HAL_TIMEOUT) debug_printf("HAL_TIMEOUT\r\n");
     }
     
     // 未检测到触摸IC
-    printf("未检测到触摸IC\r\n");
+    debug_printf("未检测到触摸IC\r\n");
     return ERROR;
 }
 

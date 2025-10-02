@@ -1,17 +1,28 @@
+/********************************************************
+Copyright (c) 2025 Dongguan City University. All rights reserved.
+FileName  : Task_LVGL_Tick.c 
+Author    : zheng_kai_wen 
+Version   : v0.0.0.0 
+Date      : 2025.10.01 
+Note      : none
+History   : none 
+*********************************************************/
+/* Includes ------------------------------------------------------*/
 #include "Task_LVGL_Tick.h"
 #include "lvgl.h"
 #include "lv_demo_stress.h"
 
-// 添加全局变量用于动画
+/* Private define ------------------------------------------------*/
+/* Private typedef -----------------------------------------------*/
+/* Public variables ----------------------------------------------*/
 static lv_obj_t * chart;
 static lv_chart_series_t * ser1;
 static lv_obj_t * arc;
 static lv_obj_t * label;
 static lv_obj_t * bar;
 static lv_obj_t * slider;
-static int chart_index = 0;
 
-// 图表更新定时器回调
+/* Public function prototypes ------------------------------------*/
 static void update_chart_timer(lv_timer_t * timer)
 {
     // 添加新的数据点到图表
@@ -28,7 +39,14 @@ static void update_chart_timer(lv_timer_t * timer)
     if(cnt > 100) cnt = 0;
 }
 
-// 弧形进度条动画回调
+/**
+ ********************************************************************
+ * name         : static void arc_loader(lv_timer_t * timer)
+ * description  : 弧形进度条动画回调函数
+ * Input        : timer - 定时器对象指针
+ * Output       : none
+ * Return       : none
+ ********************************************************************/
 static void arc_loader(lv_timer_t * timer)
 {
     static int16_t a = 0;
@@ -43,7 +61,15 @@ static void arc_loader(lv_timer_t * timer)
     lv_label_set_text(label, buf);
 }
 
-// 滑块动画回调
+/**
+ ********************************************************************
+ * name         : static void slider_anim(void * var, int32_t value)
+ * description  : 滑块动画执行回调函数
+ * Input        : var - 动画变量指针
+ *                value - 当前动画值
+ * Output       : none
+ * Return       : none
+ ********************************************************************/
 static void slider_anim(void * var, int32_t value)
 {
     lv_slider_set_value(slider, value, LV_ANIM_OFF);
@@ -53,7 +79,14 @@ static void slider_anim(void * var, int32_t value)
     lv_obj_set_style_text_color(label, color, 0);
 }
 
-// 创建滑块动画
+/**
+ ********************************************************************
+ * name         : static void start_slider_animation(void)
+ * description  : 创建并启动滑块动画
+ * Input        : none
+ * Output       : none
+ * Return       : none
+ ********************************************************************/
 static void start_slider_animation(void)
 {
     lv_anim_t a;
@@ -67,7 +100,14 @@ static void start_slider_animation(void)
     lv_anim_start(&a);
 }
 
-// 复杂的LVGL测试函数
+/**
+ ********************************************************************
+ * name         : void lv_LVGL_Test(void)
+ * description  : 创建复杂的LVGL测试界面
+ * Input        : none
+ * Output       : none
+ * Return       : none
+ ********************************************************************/
 void lv_LVGL_Test(void)
 {
     // 创建屏幕
@@ -154,6 +194,14 @@ void lv_LVGL_Test(void)
 }
 
 
+/**
+ ********************************************************************
+ * name         : void Task_LVGL_Tick(void *argument)
+ * description  : LVGL定时任务，处理LVGL事件循环
+ * Input        : argument - 任务参数指针
+ * Output       : none
+ * Return       : none
+ ********************************************************************/
 void Task_LVGL_Tick(void *argument)
 {
     // lv_LVGL_Test();
